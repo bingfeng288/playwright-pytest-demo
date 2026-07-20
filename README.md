@@ -2,7 +2,7 @@
 
 > 一套可直接运行、面向生产的自动化测试演示项目。采用 **Page Object Model（POM）** 设计，覆盖 **UI 端到端测试**、**REST API 测试**、**数据驱动**、**失败自动截图**、**HTML 测试报告** 与 **GitHub Actions CI/CD**，开箱即跑，无需任何鉴权或本地服务。
 
-![tests](https://img.shields.io/badge/tests-28%20passed-brightgreen) ![python](https://img.shields.io/badge/python-3.13-blue) ![framework](https://img.shields.io/badge/pytest-playwright-orange)
+[![CI](https://github.com/bingfeng288/playwright-pytest-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/bingfeng288/playwright-pytest-demo/actions/workflows/ci.yml) ![tests](https://img.shields.io/badge/tests-28%20passed-brightgreen) ![python](https://img.shields.io/badge/python-3.13-blue) ![framework](https://img.shields.io/badge/pytest-playwright-orange)
 
 ---
 

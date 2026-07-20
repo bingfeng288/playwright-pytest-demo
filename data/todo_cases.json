@@ -1,0 +1,26 @@
+[
+  {
+    "case_id": "TC_ADD_01",
+    "desc": "英文任务",
+    "todos": ["Write test plan", "Review PRD", "Run regression"],
+    "expected_remaining": "3 items left"
+  },
+  {
+    "case_id": "TC_ADD_02",
+    "desc": "中文任务",
+    "todos": ["编写测试用例", "执行接口测试"],
+    "expected_remaining": "2 items left"
+  },
+  {
+    "case_id": "TC_ADD_03",
+    "desc": "含特殊字符与空格",
+    "todos": ["Bug #123: fix login", "  边界值  "],
+    "expected_remaining": "2 items left"
+  },
+  {
+    "case_id": "TC_ADD_04",
+    "desc": "单条任务",
+    "todos": ["single task"],
+    "expected_remaining": "1 item left"
+  }
+]

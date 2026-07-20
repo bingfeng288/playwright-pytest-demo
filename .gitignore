@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# 报告与产物（保留目录，忽略内容）
+reports/*.html
+reports/screenshots/
+!reports/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+.DS_Store

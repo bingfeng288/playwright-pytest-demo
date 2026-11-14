@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
@@ -27,12 +27,15 @@ jobs:
       - name: Install Playwright browsers
         run: python -m playwright install --with-deps chromium
 
-      - name: Run smoke tests (UI + API)
-        run: pytest -m smoke --html=reports/report.html --self-contained-html
+      # 冒烟用例作为快速信号：失败也能在几十秒内发现，但不阻断全量执行
+      - name: Run smoke tests (fast signal)
+        run: pytest -m smoke --html=reports/smoke.html --self-contained-html
 
-      - name: Run full regression
-        if: github.event_name == 'push'
-        run: pytest -m "regression or data_driven" --html=reports/regression.html --self-contained-html
+      # 全量执行：不再按 marker 筛子集，确保 28 条用例（含纯 api 标记的 14 条）都进 CI
+      # if: always() 保证 smoke 失败时仍跑全量，避免只看到第一段结果
+      - name: Run full test suite
+        if: always()
+        run: pytest --html=reports/report.html --self-contained-html
 
       - name: Upload test report
         if: always()

@@ -87,11 +87,19 @@ class TodoPage(BasePage):
         return self
 
     # ---------- 断言 ----------
+    # 注意：断言一律基于「可见元素」而非 DOM 中的全部元素。
+    # 过滤功能的实现方式各靶场不同——React 版 TodoMVC 条件渲染（DOM 只留可见项），
+    # 而 CSS 隐藏式实现（原生 TodoMVC 等）会保留全部 li 仅 display:none。
+    # 若用 .todo-list li 计数，后者会把隐藏项也数进去，导致过滤断言误判。
+    def visible_items(self):
+        """当前视图下真正可见的条目。"""
+        return self.page.locator(f"{self.TODO_ITEMS}:visible")
+
     def expect_item_count(self, n: int):
-        expect(self.items()).to_have_count(n)
+        expect(self.visible_items()).to_have_count(n)
 
     def expect_completed_at(self, index: int):
-        expect(self.items().nth(index)).to_have_class("completed")
+        expect(self.visible_items().nth(index)).to_have_class("completed")
 
     def expect_all_texts(self, texts):
-        expect(self.page.locator(self.TODO_LABEL)).to_have_text(texts)
+        expect(self.page.locator(f"{self.TODO_LABEL}:visible")).to_have_text(texts)

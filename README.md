@@ -2,7 +2,7 @@
 
 > 一套可直接运行、面向生产的自动化测试演示项目。采用 **Page Object Model（POM）** 设计，覆盖 **UI 端到端测试**、**REST API 测试**、**数据驱动**、**失败自动截图**、**HTML 测试报告** 与 **GitHub Actions CI/CD**，开箱即跑，无需任何鉴权或本地服务。
 
-[![CI](https://github.com/bingfeng288/playwright-pytest-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/bingfeng288/playwright-pytest-demo/actions/workflows/ci.yml) ![tests](https://img.shields.io/badge/tests-28%20passed-brightgreen) ![python](https://img.shields.io/badge/python-3.13-blue) ![framework](https://img.shields.io/badge/pytest-playwright-orange)
+[![CI](https://github.com/bingfeng288/playwright-pytest-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/bingfeng288/playwright-pytest-demo/actions/workflows/ci.yml) ![tests](https://img.shields.io/badge/tests-28%20passed-brightgreen) ![python](https://img.shields.io/badge/python-3.13-blue) ![framework](https://img.shields.io/badge/playwright%2Bpytest-orange)
 
 ---
 
@@ -18,7 +18,7 @@
 | **失败自动留痕** | `pytest_runtest_makereport` 钩子：用例失败自动全页截图并附加到报告 |
 | **可视化报告** | `pytest-html` 生成自包含 HTML 报告（含通过率、耗时、失败截图） |
 | **CI/CD** | GitHub Actions：push/PR 自动装浏览器、跑全量测试、上传报告 artifact |
-| **多环境配置** | `config/settings.py` 全部支持环境变量覆盖（base_url / headless / timeout / SLA） |
+| **多环境配置** | `config/settings.py` 全部支持环境变量覆盖（`UI_BASE_URL` / `API_BASE_URL` / `HEADLESS` / `DEFAULT_TIMEOUT` / `NAVIGATION_TIMEOUT` / `API_SLA_SECONDS`） |
 | **用例分级** | `smoke` / `ui` / `api` marker，支持 `-m smoke` 快速冒烟 |
 
 ---
@@ -75,7 +75,13 @@ pytest -m ui                  # 只跑 UI 测试
 pytest -m api                 # 只跑 API 测试
 pytest -v                     # 详细输出
 HEADLESS=false SLOW_MO=500 pytest -m ui   # 有头模式慢放调试
-pytest -n auto                # 并行执行（需 pytest-xdist）
+
+# 并行执行（需 pytest-xdist）。注意：并行会同时拉起多个浏览器打公网靶场，
+# 在弱网或多级代理环境下易出现连接抖动（ERR_CONNECTION_CLOSED / 502），
+# 表现为 setup 阶段报错而非断言失败。建议从 -n 4 起步：
+pytest -n 4
+# 网络确实较慢时，配合放大导航超时（默认 30s）：
+NAVIGATION_TIMEOUT=60000 pytest -n auto
 ```
 
 ---
@@ -102,4 +108,4 @@ pytest -n auto                # 并行执行（需 pytest-xdist）
 
 ## 🔧 技术栈
 
-`Python 3.13` · `pytest` · `playwright` · `pytest-playwright` · `pytest-html` · `requests` · `GitHub Actions`
+`Python 3.13` · `pytest` · `playwright` · `pytest-html` · `requests` · `GitHub Actions`

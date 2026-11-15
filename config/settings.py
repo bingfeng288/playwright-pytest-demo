@@ -18,6 +18,10 @@ class Settings:
     HEADLESS: bool = os.getenv("HEADLESS", "true").lower() == "true"
     SLOW_MO: int = int(os.getenv("SLOW_MO", "0"))          # 毫秒，调试时可调大
     DEFAULT_TIMEOUT: int = int(os.getenv("DEFAULT_TIMEOUT", "10000"))  # 元素等待超时
+    # 导航超时与元素等待超时分开配置。
+    # Playwright 在未显式设置 navigation timeout 时，page.goto 会沿用 default_timeout；
+    # 10s 在并行执行 + 公网靶站场景下不足以完成首次导航，会造成 goto 超时误判。
+    NAVIGATION_TIMEOUT: int = int(os.getenv("NAVIGATION_TIMEOUT", "30000"))
     VIEWPORT = {"width": 1280, "height": 800}
 
     # ---------- 失败留痕 ----------
